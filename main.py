@@ -1,19 +1,33 @@
 import pygame
+from player import *
 from constants import *
-from player import Player
 
 
 def main():
+
     print("Starting asteroids!")
-    if SCREEN_WIDTH is None:
-        raise ValueError("SCREEN_WIDTH is None")
-    if SCREEN_HEIGHT is None:
-        raise ValueError("SCREEN_HEIGHT is None")
+
+    try:
+        if SCREEN_WIDTH is None:
+            raise ValueError("SCREEN_WIDTH is None")
+        if SCREEN_HEIGHT is None:
+            raise ValueError("SCREEN_HEIGHT is None")
+        if PLAYER_RADIUS is None:
+            raise ValueError("PLAYER_RADIUS is None")
+    except ValueError as e:
+        print(f"Error: {e}")
+
     print("Screen width:", SCREEN_WIDTH)
     print("Screen height:", SCREEN_HEIGHT)
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+
     x = SCREEN_WIDTH / 2
     y = SCREEN_WIDTH / 2
+
     player = Player(x, y, PLAYER_RADIUS)
 
     pygame.init()
@@ -29,8 +43,12 @@ def main():
                 return
         black = (0, 0, 0)
         screen.fill(black)
-        player.update(dt)
-        player.draw(screen)
+
+        for object in updatable:
+            object.update(dt)
+        for object in drawable:
+            object.draw(screen)
+
         pygame.display.flip()
         time_passed = clock.tick(60)
         dt = time_passed / 1000

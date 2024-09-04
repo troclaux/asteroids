@@ -20,6 +20,12 @@ class Player(CircleShape):
         white = (255, 255, 255)
         pygame.draw.polygon(screen, white, self.triangle(), 2)
 
+    def move(self, dt):
+        if PLAYER_SPEED is None:
+            raise ValueError("PLAYER_SPEED is None")
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt
+
     def rotate(self, dt):
         if PLAYER_TURN_SPEED is None:
             raise ValueError("PLAYER_TURN_SPEED is None")
@@ -27,6 +33,12 @@ class Player(CircleShape):
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_w]:
+            self.move(dt)
+
+        if keys[pygame.K_s]:
+            self.move(-dt)
 
         if keys[pygame.K_a]:
             self.rotate(-dt)
