@@ -1,6 +1,7 @@
 import pygame
+from circleshape import *
+from shot import *
 from constants import *
-from circleshape import CircleShape
 
 
 class Player(CircleShape):
@@ -45,3 +46,16 @@ class Player(CircleShape):
 
         if keys[pygame.K_d]:
             self.rotate(dt)
+
+        if keys[pygame.K_SPACE]:
+            self.shoot()
+
+    def shoot(self):
+        shot = Shot(self.position.x, self.position.y)
+        try:
+            if PLAYER_SHOOT_SPEED is None:
+                raise ValueError("PLAYER_SHOOT_SPEED is None")
+            shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+
+        except ValueError as e:
+            print(f"Error: {e}")
