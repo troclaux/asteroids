@@ -1,3 +1,4 @@
+import sys
 import pygame
 from player import *
 from constants import *
@@ -52,6 +53,11 @@ def main():
             object.update(dt)
         for object in drawable:
             object.draw(screen)
+
+        for asteroid in asteroids:
+            if player.collision(asteroid):
+                print("Game over!")
+                sys.exit()
 
         pygame.display.flip()
         time_passed = clock.tick(60)
