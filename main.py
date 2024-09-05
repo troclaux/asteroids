@@ -1,11 +1,10 @@
 import pygame
 from player import *
 from constants import *
+from asteroidfield import *
 
 
 def main():
-
-    print("Starting asteroids!")
 
     try:
         if SCREEN_WIDTH is None:
@@ -17,18 +16,23 @@ def main():
     except ValueError as e:
         print(f"Error: {e}")
 
+    print("Starting asteroids!")
     print("Screen width:", SCREEN_WIDTH)
     print("Screen height:", SCREEN_HEIGHT)
 
+    asteroids = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
 
     x = SCREEN_WIDTH / 2
     y = SCREEN_WIDTH / 2
 
     player = Player(x, y, PLAYER_RADIUS)
+    asteroid_field = AsteroidField()
 
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
