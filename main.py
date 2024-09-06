@@ -65,8 +65,8 @@ def main():
 
             for shot in shots:
                 if asteroid.collision(shot):
+                    asteroid.split()
                     shot.kill()
-                    asteroid.kill()
 
         pygame.display.flip()
         time_passed = clock.tick(60)
